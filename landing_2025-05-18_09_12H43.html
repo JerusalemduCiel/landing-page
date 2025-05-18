@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jérusalem du Ciel – Le Jeu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Playfair Display', serif;
+      color: white;
+    }
+    section#accueil {
+      background-image: url('img/FOND1.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      padding-top: 80px;
+      transition: filter 0.5s ease;
+    }
+    
+    .grayscale {
+  filter: grayscale(100%);
+}
+
+      .intro-text {
+      margin-top: -20px; /* Ajuste ici pour monter ou descendre */
+      text-align: center;
+    }
+    h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+    p.subtitle {
+      font-size: 1.5em;
+      margin-top: 0.5em;
+    }
+    .lang-menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 1000;
+    }
+    .lang-menu a {
+      color: white;
+      text-decoration: none;
+      margin-bottom: 6px;
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+    }
+    .lang-menu img {
+      width: 24px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    .lang-fr {
+     margin-right: 0px;
+    }
+
+    .lang-en {
+     margin-right: 8px;
+    }
+
+     .precommande-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+    }
+
+     .precommande-button img {
+  height: 90px;
+  transition: transform 0.3s, filter 0.3s;
+  cursor: pointer;
+    }
+
+     .precommande-button img:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px gold);
+    }
+
+    .custom-icons {
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+     height: 150px;
+     z-index: 1000;
+    }
+
+   .icon-wrapper {
+  position: absolute;
+  transition: transform 0.3s, filter 0.3s;
+  cursor: pointer;
+}
+
+.icon-wrapper img {
+  height: 120px;
+  display: block;
+  margin: 0 auto;
+}
+
+.icon-wrapper:hover img {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 10px gold);
+}
+
+
+    .custom-icons img:hover {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 10px gold);
+    }
+    section#teaser, section#faq {
+      padding: 4em 2em;
+      text-align: center;
+    }
+    section#faq {
+  background-image: url('img/moise3.png');
+  background-size: cover;
+  color: black;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.7);
+  padding: 4vh 2vw;
+}
+.modal.show {
+  display: block;
+}
+.modal-content {
+  background-color: #fdfdfd;
+  color: #111;
+  margin: 1vh auto;
+  left: 0;
+  right: 0;
+  max-width: 90vw;
+  text-align: center;
+  padding: 2em;
+  border-radius: 12px;
+  position: relative;
+  font-family: 'Playfair Display', serif;
+}
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #888;
+}
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 1.8em;
+}
+.modal-content p, .modal-content li {
+  line-height: 1.6;
+  font-size: 1.1em;
+}
+.modal-content ul {
+  padding-left: 1.2em;
+}
+
+.video-block {
+  margin-bottom: 2em;
+}
+.video-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+.video-list li {
+  font-size: 1.1em;
+  padding: 0.3em 0;
+}
+.video-list li::before {
+  content: "▶ ";
+  color: #c99c00;
+  font-weight: bold;
+}
+
+#carte-defi-modal .modal-content {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.signature {
+  margin-top: 2em;
+  font-style: italic;
+  color: #777;
+  text-align: right;
+}
+ 
+.scroll-top-btn {
+  display: inline-block;
+  margin: 3em auto 1em auto;
+  padding: 0.6em 1.2em;
+  font-size: 1.1em;
+  background: linear-gradient(145deg, #ffd700, #f5c518);
+  color: #111;
+  border: none;
+  border-radius: 30px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
+}
+.scroll-top-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+  background: linear-gradient(145deg, #ffea70, #ffcb1f);
+}
+ 
+@media screen and (max-width: 600px) {
+  .lang-menu {
+    top: 10px;
+    right: 10px;
+    font-size: 0.9em;
+  }
+
+@media screen and (max-width: 600px) {
+  .modal-content {
+    padding: 1em;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    font-size: 1em;
+  }
+
+  .modal-content iframe {
+    width: 100%;
+    height: 200px;
+  }
+
+  .modal-content h2,
+  .modal-content h3 {
+    font-size: 1.3em;
+  }
+
+  .modal-content ul li {
+    font-size: 1em;
+  }
+
+  .close-modal {
+    font-size: 1.3em;
+    right: 12px;
+    top: 10px;
+  }
+}
+
+  .precommande-button {
+    top: 10px;
+    left: 10px;
+  }
+
+  .lang-menu a img,
+  .precommande-button img {
+    height: 20px;
+    width: auto;
+  }
+
+  .precommande-button img {
+    height: 48px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  p.subtitle {
+    font-size: 1.1em;
+  }
+
+  .custom-icons img {
+    height: 90px;
+  }
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.modal.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+
+.camera-group:hover .video-projection {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.messianic-icon {
+  position: absolute;
+  left: 760px;
+  top: 430px;
+  transform: translate(-50%, -50%);
+  z-index: 1500;
+  cursor: pointer;
+}
+
+.messianic-icon img {
+  width: 60px;
+  height: 60px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.messianic-icon:hover img {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px gold);
+}
+
+.tooltip-defi {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 0.9em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+.messianic-icon:hover .tooltip-defi {
+  opacity: 1;
+}
+
+#arbre-defi-container {
+  position: absolute;
+  top: 340px;
+  left:708px;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  z-index: 1500;
+  cursor: pointer;
+}
+
+
+@keyframes rotate-halo {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#tooltip-defi {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffd700;
+  color: #111;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: nowrap;
+  display: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.bulle-defi {
+  position: absolute;
+  height: 130px;
+  width: auto;
+  transform: scale(0);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 1400;
+}
+.bulle-defi.show {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bulle-defi.show {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.arbre-vibrant {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: arbre-vibre 1.5s infinite ease-in-out;
+  transition: transform 0.2s;
+}
+
+@keyframes arbre-vibre {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  50% {
+    transform: scale(0.98) rotate(-1deg);
+  }
+  75% {
+    transform: scale(1.02) rotate(1deg);
+  }
+}
+.icon-tooltip {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffd700;
+  color: #111;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  font-family: 'Playfair Display', serif;
+  z-index: 1200;
+}
+
+.icon-wrapper:hover .icon-tooltip {
+  opacity: 1;
+}
+
+.carte-defi-img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background: transparent;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+}
+.carte-defi-img.fade-out {
+  opacity: 0;
+}
+
+</style>
+</head>
+<body>
+
+  <section id="accueil">
+  <div class="precommande-button">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScWNN_VYKT3ReMmnI8jOmbBO_qTjk1Aua5I6VQwIWKT95Olmg/viewform?usp=sharing" target="_blank">
+      <img src="img/precommande.png" alt="Précommander" title="précommandez et bénéficiez de bonus">
+    </a>
+  </div>
+
+  <div class="lang-menu">
+    <a href="index.html" class="lang-fr"><img src="img/FR.png" alt="Français"> Français</a>
+    <a href="index-en.html" class="lang-en"><img src="img/GB.png" alt="English"> English</a>
+  </div>
+  
+  <div class="intro-text">
+    <h1>Jérusalem du Ciel – Le Jeu</h1>
+    <p class="subtitle">Un jeu. Une histoire. Une mission divine.</p>
+  </div>
+
+  <div class="custom-icons">
+  <div class="icon-wrapper" style="left: 33%; bottom: 72px;" role="button" onclick="document.querySelector('#faq').scrollIntoView({ behavior: 'smooth' })">
+    <img src="img/question.png" alt="FAQ">
+    <span class="icon-tooltip">FAQ</span>
+  </div>
+
+  <div class="icon-wrapper" style="left: 40%; bottom: 92px;" role="button" onclick="document.getElementById('mechanicsModal').classList.add('show')">
+    <img src="img/de.png" alt="Comment on joue ?">
+    <span class="icon-tooltip">Comment on joue ?</span>
+  </div>
+
+  <div class="icon-wrapper" style="left: 47%; bottom: 112px;" role="button" onclick="document.getElementById('presentationModal').classList.add('show')">
+    <img src="img/parchemin.png" alt="Présentation">
+    <span class="icon-tooltip">De quoi s'agit-il ?</span>
+  </div>
+
+  <div class="icon-wrapper" style="left: 54%; bottom: 92px;" role="button" onclick="document.getElementById('videosModal').classList.add('show')">
+    <img src="img/camera.png" alt="Vidéos">
+    <span class="icon-tooltip">Vidéos explicatives</span>
+  </div>
+
+  <div class="icon-wrapper" style="left: 61%; bottom: 72px;" role="button" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScWNN_VYKT3ReMmnI8jOmbBO_qTjk1Aua5I6VQwIWKT95Olmg/viewform?usp=sharing', '_blank')">
+    <img src="img/enveloppe.png" alt="Contact">
+    <span class="icon-tooltip">Contactez-nous</span>
+  </div>
+</div>
+
+
+
+
+</section> <!-- ✅ fermeture propre de #accueil AVANT les bulles -->
+
+<!-- Ces éléments sont désormais en dehors de #accueil pour éviter les conflits -->
+
+<div id="arbre-defi-container"
+     onmouseenter="showTooltip();"
+     onmouseleave="hideTooltip();"
+     onclick="deployerBulles()">
+
+  <img src="img/arbre_defi.png" alt="Arbre de Vie" class="arbre-vibrant">
+  <div id="tooltip-defi">Relevez-vous le défi ?</div>
+</div>
+
+<!-- Bulles déployées -->
+<img src="img/bulle1.png" id="bulle1" class="bulle-defi" onclick="openCarte(1)">
+<img src="img/bulle2.png" id="bulle2" class="bulle-defi" onclick="openCarte(2)">
+<img src="img/bulle3.png" id="bulle3" class="bulle-defi" onclick="openCarte(3)">
+<img src="img/bulle4.png" id="bulle4" class="bulle-defi" onclick="openCarte(4)">
+<img src="img/bulle5.png" id="bulle5" class="bulle-defi" onclick="openCarte(5)">
+
+
+ <section id="teaser">
+  <h2>🎥 Teaser officiel</h2>
+  <iframe
+    id="teaserVideo"
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/-sGrDPKpu5Y?enablejsapi=1"
+    title="Jerusalem of Heaven teaser"
+    frameborder="0"
+    allowfullscreen>
+  </iframe>
+</section>
+
+
+
+  <section id="faq">
+    <h2>❓ Questions fréquentes</h2>
+    <p><strong>À partir de quel âge peut-on jouer ?</strong><br>Dès 6 ans</p>
+    <p><strong>Combien de joueurs ? Durée ?</strong><br>2 à 6 joueurs, 45–90 min</p>
+    <p><strong>Est-ce un jeu religieux ?</strong><br>Fondé sur la tradition juive, mais ouvert à tous.</p>
+    <p><strong>Des versions anglaise et hébraïque sont-elles prévues ?</strong><br>Oui, elles sont en préparation</p>
+    <p><strong>Quand sera-t-il livré ?</strong><br>3 à 4 mois après lancement</p>
+  </section>
+<div id="mechanicsModal" class="modal" onclick="this.classList.remove('show')">
+  <div class="modal-content" onclick="event.stopPropagation();">
+    <span class="close-modal" onclick="document.getElementById('mechanicsModal').classList.remove('show')">✖</span>
+    <h2>🎲 Comment joue-t-on à Jérusalem du Ciel ?</h2>
+    <p><strong>Jérusalem du Ciel</strong> est un jeu d’étude et d’élévation.<br>
+    Chaque joueur avance sur un plateau qui retrace les grandes étapes de l’histoire du peuple juif, de la Création jusqu’à notre époque.</p>
+    <p>Mais ici, on ne progresse pas par chance…<br>
+    On progresse par <strong>sagesse</strong>, par <strong>dialogue</strong>, par <strong>transmission</strong>.</p>
+    <h3>🔎 Le but du jeu : grandir spirituellement</h3>
+    <p>Chaque case représente une époque, un événement ou un défi.<br>Pour avancer, il faut :</p>
+    <ul>
+      <li>Répondre à des questions (de niveau adapté)</li>
+      <li>Débattre sur des situations morales ou spirituelles</li>
+      <li>Écouter des enseignements de maîtres d’Israël</li>
+      <li>Partager sa compréhension avec les autres joueurs</li>
+    </ul>
+    <p>Le but n’est pas de « gagner » contre les autres, mais de se rapprocher ensemble d’une <em>Jérusalem intérieure</em>.</p>
+    <h3>🧰 Les outils à disposition</h3>
+    <ul>
+      <li>Des cartes variées : questions, midrashim, dilemmes, anecdotes, citations…</li>
+      <li>Un plateau illustré : 33 étapes clés de l’histoire juive</li>
+      <li>Des cartes de Sages : chaque joueur est soutenu par des figures spirituelles</li>
+      <li>Des niveaux de progression : on commence simple, et on monte en compréhension</li>
+      <li>Des moments de débat ou de silence : pour que chaque voix trouve sa place</li>
+    </ul>
+    <h3>🫱 Comment joue-t-on ?</h3>
+    <ul>
+      <li>On choisit un niveau selon l’âge ou le public</li>
+      <li>On lance le dé, on avance, on tire une carte liée à la case</li>
+      <li>Seul ou en équipe, on répond, on réfléchit, on échange</li>
+      <li>Si on réussit ou si l’échange est sincère, on avance… et on s’élève</li>
+    </ul>
+    <p>🎲 <strong>ludique</strong> – 📜 <strong>profond</strong> – 👨‍👩‍👧‍👦 <strong>familial</strong> – 💬 <strong>vivant</strong></p>
+    <p>Il peut se jouer à Chabbat, en classe, en famille, à la maison ou en yeshiva.</p>
+    <div class="signature">Ora Shel Torah</div>
+  </div>
+</div>
+
+<div id="presentationModal" class="modal" onclick="this.classList.remove('show')">
+  <div class="modal-content" onclick="event.stopPropagation();">
+    <span class="close-modal" onclick="document.getElementById('presentationModal').classList.remove('show')">✖</span>
+    <h2>📜 Présentation du projet</h2>
+    <p>Et si l’Histoire devenait un jeu ?<br>
+    Et si les générations pouvaient se transmettre les grandes étapes de la mémoire juive autour d’un plateau ?</p>
+    <p>Entre récits fondateurs, défis spirituels, dilemmes moraux et éclats de sagesse, Jérusalem du Ciel est bien plus qu’un jeu : c’est un voyage initiatique.</p>
+    <p>Né du désir de réunir les familles, les communautés, les cercles d’étude et d’amitié autour d’un moment à la fois ludique, profond et stimulant...</p>
+    <p>Le joueur n’incarne pas un personnage, mais le peuple tout entier, dont il faut porter la mémoire, les valeurs et l’espérance.</p>
+    <p>🪔 À chaque case, une question…<br>📜 À chaque carte, une tradition…<br>🎲 À chaque lancer de dé, une responsabilité.</p>
+    <p>Conçu pour tous les âges à partir de 6 ans, Jérusalem du Ciel est un jeu familial, spirituel, coopératif et plein de surprises.</p>
+    <div class="signature">Ora Shel Torah</div>
+  </div>
+</div>
+
+<div id="videosModal" class="modal" onclick="this.classList.remove('show')">
+  <div class="modal-content" onclick="event.stopPropagation();">
+    <span class="close-modal" onclick="document.getElementById('videosModal').classList.remove('show')">✖</span>
+    <h2>📽️ Vidéos officielles</h2>
+
+    <div class="video-block">
+      <h3>🎞️ Teaser principal</h3>
+      <iframe width="100%" height="315" src="https://www.youtube.com/embed/-sGrDPKpu5Y" title="Teaser Jérusalem du Ciel" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="video-list">
+      <h3>🎬 Autres vidéos (à venir)</h3>
+      <ul>
+        <li>📌 <em>Présentation du jeu</em> – bientôt en ligne</li>
+        <li>📌 <em>Extraits de parties</em> – bientôt en ligne</li>
+        <li>📌 <em>Tutoriels / Dvar Torah</em> – bientôt en ligne</li>
+      </ul>
+    </div>
+
+    <div class="signature">Ora Shel Torah</div>
+  </div>
+</div>
+
+<script>
+  // Fermer les modales avec la touche Échap
+  document.addEventListener('keydown', function(e) {
+    if (e.key === "Escape") {
+      document.querySelectorAll('.modal.show').forEach(function(modal) {
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+      });
+    }
+  });
+
+  // Gérer le scroll du body quand une modale est ouverte
+  const modals = document.querySelectorAll('.modal');
+
+  modals.forEach(modal => {
+    modal.addEventListener('show', () => {
+      document.body.classList.add('modal-open');
+    });
+    modal.addEventListener('hide', () => {
+      document.body.classList.remove('modal-open');
+    });
+  });
+
+  // Intercepter l’ouverture via JS natif (ajout d’une classe "show")
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(m => {
+      if (m.attributeName === "class") {
+        const modal = m.target;
+        if (modal.classList.contains("show")) {
+          document.body.classList.add("modal-open");
+        } else {
+          document.body.classList.remove("modal-open");
+        }
+      }
+    });
+  });
+
+  modals.forEach(modal => {
+    observer.observe(modal, { attributes: true });
+  });
+</script>
+
+<!-- Musique de fond -->
+
+<!-- Bouton de contrôle -->
+
+
+
+<audio id="background-music" loop>
+  <source src="AmokDuduk.mp3" type="audio/mpeg">
+  Votre navigateur ne supporte pas l'audio HTML5.
+</audio>
+
+<button id="music-toggle" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid gold;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  color: gold;
+  font-size: 1.2em;
+  z-index: 2000;
+" title="Activer/Désactiver la musique">
+  🔊
+</button>
+
+<script>
+window.onload = function () {
+  const music = document.getElementById("background-music");
+  const toggle = document.getElementById("music-toggle");
+  let isPlaying = false;
+
+  function tryPlayMusic() {
+    if (!isPlaying) {
+      music.play().then(() => {
+        isPlaying = true;
+        toggle.innerText = "🔊";
+      }).catch(() => {
+        toggle.innerText = "▶️";
+      });
+    }
+    document.removeEventListener("click", tryPlayMusic);
+    document.removeEventListener("touchstart", tryPlayMusic);
+  }
+
+  document.addEventListener("click", tryPlayMusic);
+  document.addEventListener("touchstart", tryPlayMusic);
+
+  toggle.addEventListener("click", () => {
+    if (isPlaying) {
+      music.pause();
+      toggle.innerText = "🔇";
+    } else {
+      music.play();
+      toggle.innerText = "🔊";
+    }
+    isPlaying = !isPlaying;
+  });
+
+  // YouTube
+  window.onYouTubeIframeAPIReady = function () {
+    player = new YT.Player('teaserVideo', {
+      events: {
+        'onStateChange': function (event) {
+          if (event.data === YT.PlayerState.PLAYING) {
+            music.pause();
+            toggle.innerText = "🔇";
+            isPlaying = false;
+          }
+        }
+      }
+    });
+  };
+
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+};
+</script>
+
+<script>
+  function openStarAnimation() {
+    // À compléter : déploiement de l’étoile + cartes animées
+    alert("Animation de l’étoile et des cartes à venir ici !");
+  }
+</script>
+
+<script>
+function showTooltip() {
+  document.getElementById('tooltip-defi').style.display = 'block';
+  if (!bullesVisibles) {
+    document.getElementById('accueil').classList.add('grayscale');
+  }
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip-defi').style.display = 'none';
+  
+if (!bullesVisibles) {
+    document.getElementById('accueil').classList.remove('grayscale');
+  }
+}
+
+
+function openCarte(num) {
+  const modal = document.getElementById('carte-defi-modal');
+  const container = document.getElementById('carte-defi-container');
+  const cartes = {
+    1: ["img/carte_pilpoul.png"],
+    2: ["img/carte_dilemme.png", "img/carte_dilemme2.png"],
+    3: ["img/carte_qcm.png", "img/carte_qcm2.png"],
+    4: ["img/carte_midrash.png", "img/carte_midrash2.png"],
+    5: ["img/carte_hebreu.png"]
+  };
+
+  const [firstImage, secondImage] = cartes[num] || [];
+
+  if (!firstImage) {
+    alert("Image introuvable pour cette carte !");
+    return;
+  }
+
+  const imgElement = document.createElement('img');
+  imgElement.src = firstImage;
+  imgElement.alt = `Carte défi ${num}`;
+  imgElement.className = 'carte-defi-img';
+
+  imgElement.onerror = () => {
+    console.error("Erreur de chargement : " + firstImage);
+    alert("Image non trouvée : " + firstImage);
+  };
+
+  if (secondImage) {
+    imgElement.onclick = () => remplacerCarte(imgElement, secondImage);
+  }
+
+  container.innerHTML = '';
+  container.appendChild(imgElement);
+  modal.classList.add('show');
+}
+
+
+function remplacerCarte(element, newSrc) {
+  element.classList.add('fade-out');
+  setTimeout(() => {
+    element.src = newSrc;
+    element.classList.remove('fade-out');
+  }, 500);
+}
+</script>
+
+
+
+ 
+</script>
+
+<!-- 🔲 Modale pour afficher la carte défi -->
+<div id="carte-defi-modal" class="modal" onclick="fermerCarteDefi()">
+  <div class="modal-content" onclick="event.stopPropagation();">
+    <span class="close-modal" onclick="fermerCarteDefi()">✖</span>
+    <div id="carte-defi-container">
+      <!-- La carte s'affiche ici dynamiquement -->
+    </div>
+  </div>
+</div>
+
+<script>
+function fermerCarteDefi() {
+  const modal = document.getElementById('carte-defi-modal');
+  modal.classList.remove('show');
+}
+</script>
+
+<!-- ✅ Fixes appliqués pour : cartes défi qui ne s'ouvrent pas, taille et fond blanc -->
+
+<!-- 🟢 Positionné juste après les bulles (et avant le teaser) -->
+
+<script>
+</script>
+<script>
+let bullesVisibles = false;
+
+function mettreAJourGrayscale() {
+  const accueil = document.getElementById('accueil');
+  if (bullesVisibles) {
+    accueil.classList.add('grayscale');
+  } else {
+    accueil.classList.remove('grayscale');
+  }
+}
+
+function deployerBulles() {
+  bullesVisibles = !bullesVisibles;
+
+  const arbre = document.getElementById('arbre-defi-container');
+  const arbreRect = arbre.getBoundingClientRect();
+
+  const offsetTop = window.scrollY + arbreRect.top;
+  const offsetLeft = window.scrollX + arbreRect.left;
+
+  const positions = [
+    { x: -60, y: 0 },
+    { x: 60, y: -100 },
+    { x: 180, y: 0 },
+    { x: 0, y: 130 },
+    { x: 120, y: 130 }
+  ];
+
+  for (let i = 1; i <= 5; i++) {
+    const bulle = document.getElementById('bulle' + i);
+
+    if (bullesVisibles) {
+      const pos = positions[i - 1];
+      bulle.style.position = 'absolute';
+      bulle.style.left = (offsetLeft + pos.x) + 'px';
+      bulle.style.top = (offsetTop + pos.y) + 'px';
+
+      requestAnimationFrame(() => {
+        bulle.classList.add('show');
+        bulle.style.pointerEvents = 'auto';
+        bulle.style.cursor = 'pointer';
+      });
+    } else {
+      bulle.classList.remove('show');
+      setTimeout(() => {
+        bulle.style.left = '';
+        bulle.style.top = '';
+        bulle.style.pointerEvents = 'none';
+      }, 600);
+    }
+  }
+
+  mettreAJourGrayscale();
+}
+
+function fermerBulles() {
+  for (let i = 1; i <= 5; i++) {
+    const bulle = document.getElementById('bulle' + i);
+    bulle.classList.remove('show');
+    bulle.style.pointerEvents = 'none';
+  }
+
+  setTimeout(() => {
+    for (let i = 1; i <= 5; i++) {
+      const bulle = document.getElementById('bulle' + i);
+      bulle.style.left = '';
+      bulle.style.top = '';
+    }
+    bullesVisibles = false;
+    mettreAJourGrayscale();
+  }, 600);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === "Escape") {
+    if (bullesVisibles) fermerBulles();
+    document.querySelectorAll('.modal.show').forEach(function(modal) {
+      modal.classList.remove('show');
+      document.body.classList.remove('modal-open');
+    });
+  }
+});
+
+document.addEventListener('click', function(e) {
+  const isBulle = e.target.classList.contains('bulle-defi');
+  const isArbre = e.target.closest('#arbre-defi-container');
+  const isCarte = e.target.closest('#carte-defi-modal');
+
+  if (bullesVisibles && !isBulle && !isArbre && !isCarte) {
+    fermerBulles();
+  }
+});
+</script>
+
+
+</body>
+</html>
+
+
